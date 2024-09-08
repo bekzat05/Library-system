@@ -1,9 +1,12 @@
 package ru.dao;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.models.Book;
 import ru.models.Person;
 
@@ -12,41 +15,49 @@ import java.util.Optional;
 
 @Component
 public class PersonDAO {
+
+    private final SessionFactory sessionFactory;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public PersonDAO(JdbcTemplate jdbcTemplate) {
+    public PersonDAO(SessionFactory sessionFactory, JdbcTemplate jdbcTemplate) {
+        this.sessionFactory = sessionFactory;
         this.jdbcTemplate = jdbcTemplate;
     }
 
+
+    @Transactional(readOnly = true)
     public List<Person> index() {
-        return jdbcTemplate.query("SELECT * FROM Person", new BeanPropertyRowMapper<>(Person.class));
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createQuery("select p from Person p", Person.class)
+                .getResultList();
     }
 
+    @Transactional(readOnly = true)
     public Person show(int id){
-        return jdbcTemplate.query("SELECT * FROM Person WHERE personid=?",
-                        new Object[]{id},
-                        new BeanPropertyRowMapper<>(Person.class))
-                .stream().findAny().orElse(null);
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Person.class, id);
     }
 
+    @Transactional
     public void save(Person person){
-//        person.setId(++PEOPLE_COUNT);
-//        people.add(person);
-        jdbcTemplate.update("INSERT INTO Person (personName, yearOfBirth) VALUES (?, ?)",
-                person.getPersonName(),
-                person.getYearOfBirth());
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(person);
     }
 
+    @Transactional
     public void update(int id, Person updatedPerson){
-        jdbcTemplate.update("UPDATE Person SET personName=?, yearOfBirth=? WHERE personid=?",
-                updatedPerson.getPersonName(),
-                updatedPerson.getYearOfBirth(),
-                id);
+        Session session = sessionFactory.getCurrentSession();
+        Person personToBeUpdated = session.get(Person.class, id);
+        personToBeUpdated.setPersonName(updatedPerson.getPersonName());
+        personToBeUpdated.setYearOfBirth(updatedPerson.getYearOfBirth());
     }
 
+    @Transactional
     public void delete(int id){
-        jdbcTemplate.update("DELETE FROM Person WHERE personid=?", id);
+        Session session = sessionFactory.getCurrentSession();
+        session.remove(session.get(Person.class, id));
     }
 
     public Optional<Person> getPersonByName(String personName) {

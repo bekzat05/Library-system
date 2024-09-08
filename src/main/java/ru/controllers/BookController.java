@@ -12,6 +12,7 @@ import ru.dao.PersonDAO;
 import ru.models.Book;
 import ru.models.Person;
 
+import java.util.*;
 import java.util.Optional;
 
 @Controller
@@ -97,5 +98,6 @@ public class BookController {
     public String assign(@PathVariable("id") int id, @ModelAttribute("person") Person selectedPerson){
         bookDAO.assign(id, selectedPerson);
         return "redirect:/books/" + id;
+
     }
 }
