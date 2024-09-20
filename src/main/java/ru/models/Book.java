@@ -5,80 +5,104 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "Book")
 public class Book {
 
     @Id
-    @Column(name = "bookid")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int bookId;
-
-    @ManyToOne
-    @JoinColumn(name = "personid", referencedColumnName = "personid")
-    private Person personId;
+    private int id;
 
     @NotEmpty(message = "The title of the book cannot be empty!")
     @Size(min = 2, max = 100, message = "The length of the title must be between 2 and 100!")
-    @Column(name = "bookname")
-    private String bookName;
+    @Column(name = "title")
+    private String title;
 
     @NotEmpty(message = "The author cannot be blank!")
     @Size(min = 2, max = 100, message = "The length of the author's name must be between 2 and 100!")
-    @Column(name = "bookauthor")
-    private String bookAuthor;
+    @Column(name = "author")
+    private String author;
 
     @Min(value = 1500, message = "The year of the publication must after 1500")
-    @Column(name = "yearofpublication")
-    private int yearOfPublication;
+    @Column(name = "year")
+    private int year;
+
+    @ManyToOne
+    @JoinColumn(name = "person_id", referencedColumnName = "id")
+    private Person owner;
+
+    @Column(name = "taken_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date takenAt;
+
+    @Transient
+    private boolean expired;
 
     public Book() {
     }
 
-    public Book(Person personId, String bookName, String bookAuthor, int yearOfPublication) {
-        this.personId = personId;
-        this.bookName = bookName;
-        this.bookAuthor = bookAuthor;
-        this.yearOfPublication = yearOfPublication;
+    public Book(String title, String author, int year) {
+        this.title = title;
+        this.author = author;
+        this.year = year;
     }
 
-    public int getBookId() {
-        return bookId;
+    public int getId() {
+        return id;
     }
 
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getBookName() {
-        return bookName;
+    public String getTitle() {
+        return title;
     }
 
-    public void setBookName(String bookName) {
-        this.bookName = bookName;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getBookAuthor() {
-        return bookAuthor;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setBookAuthor(String bookAuthor) {
-        this.bookAuthor = bookAuthor;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
-    public int getYearOfPublication() {
-        return yearOfPublication;
+    public int getYear() {
+        return year;
     }
 
-    public void setYearOfPublication(int yearOfPublication) {
-        this.yearOfPublication = yearOfPublication;
+    public void setYear(int year) {
+        this.year = year;
     }
 
-    public Person getPersonId() {
-        return personId;
+    public Person getOwner() {
+        return owner;
     }
 
-    public void setPersonId(Person personId) {
-        this.personId = personId;
+    public void setOwner(Person owner) {
+        this.owner = owner;
+    }
+
+    public Date getTakenAt() {
+        return takenAt;
+    }
+
+    public void setTakenAt(Date takenAt) {
+        this.takenAt = takenAt;
+    }
+
+    public boolean isExpired() {
+        return expired;
+    }
+
+    public void setExpired(boolean expired) {
+        this.expired = expired;
     }
 }
