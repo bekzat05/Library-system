@@ -7,16 +7,21 @@
 <body>
 
 <form th:method="POST" th:action="@{/books}" th:object="${book}">
-  <label for="bookName">Title</label>
-  <input type="text" th:field="*{bookName}" id="bookName">
-  <div style="color: red" th:if="${#fields.hasErrors('bookName')}" th:errors="*{bookName}">Title error</div>
+  <label for="title">Title: </label>
+  <input type="text" th:field="*{title}" id="title">
+  <div style="color: red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title error</div>
+
   <br/>
-  <label for="bookAuthor">Author</label>
-  <input type="text" th:field="*{bookAuthor}" id="bookAuthor">
-  <div style="color: red" th:if="${#fields.hasErrors('bookAuthor')}" th:errors="*{bookAuthor}">Author error</div>
-  <label for="yearOfPublication">Year of publication</label>
-  <input type="text" th:field="*{yearOfPublication}" id="yearOfPublication">
-  <div style="color: red" th:if="${#fields.hasErrors('yearOfPublication')}" th:errors="*{yearOfPublication}">yearOfPublication error</div>
+
+  <label for="author">Author: </label>
+  <input type="text" th:field="*{author}" id="author">
+  <div style="color: red" th:if="${#fields.hasErrors('author')}" th:errors="*{author}">Author error</div>
+
+  <br/>
+
+  <label for="year">Year of publication: </label>
+  <input type="text" th:field="*{year}" id="year">
+  <div style="color: red" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">yearOfPublication error</div>
   <br/>
   <input type="submit" value="Create"/>
 </form>

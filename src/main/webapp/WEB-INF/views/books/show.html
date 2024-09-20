@@ -6,15 +6,15 @@
 </head>
 <body>
 
-<p th:text="${book.getBookName()}">VALUE</p>
-<p th:text="${book.getBookAuthor()}">VALUE</p>
-<p th:text="${book.getYearOfPublication()}">VALUE</p>
+<p th:text="${book.getTitle()}">VALUE</p>
+<p th:text="${book.getAuthor()}">VALUE</p>
+<p th:text="${book.getYear()}">VALUE</p>
 
 <br/>
 
 <div th:if="${owner}">
-    <span>Person that has this book: </span> <span th:text="${owner.getPersonName()}">Person Name</span>
-    <form th:method="PATCH" th:action="@{/books/{bookId}/release(bookId=${book.getBookId()})}">
+    <span>Person that has this book: </span> <span th:text="${owner.getFullName()}">Person Name</span>
+    <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getId()})}">
         <input type="submit" value="Release the book">
     </form>
 </div>
@@ -24,20 +24,20 @@
 
 <div th:if="${people}">
     <span>This book is free. Who do you want to assign in to?</span>
-    <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getBookId()})}">
+    <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getId()})}">
         <label for="person">Choose the person</label>
-        <select th:object="${person}" th:field="*{personId}" id="person">
-            <option th:each="person : ${people}" th:value="${person.getPersonId()}" th:text="${person.getPersonName()}">
+        <select th:object="${person}" th:field="*{id}" id="person">
+            <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getFullName()}">
             </option>
         </select>
         <input type="submit" value="Assign the book"/>
     </form>
 </div>
 
-<form th:method="GET" th:action="@{/books/{bookId}/edit(bookId=${book.getBookId()})}">
+<form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
     <input type="submit" value="Edit"/>
 </form>
-<form th:method="DELETE" th:action="@{/books/{bookId}(bookId=${book.getBookId()})}">
+<form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
     <input type="submit" value="Delete"/>
 </form>
 </body>

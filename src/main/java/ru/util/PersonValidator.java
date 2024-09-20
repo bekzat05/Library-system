@@ -7,15 +7,16 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.dao.PersonDAO;
 import ru.models.Person;
+import ru.services.PeopleService;
 
 @Component
 public class PersonValidator implements Validator {
 
-    private final PersonDAO personDAO;
+    private final PeopleService peopleService;
 
     @Autowired
-    public PersonValidator(PersonDAO personDAO) {
-        this.personDAO = personDAO;
+    public PersonValidator(PeopleService peopleService) {
+        this.peopleService = peopleService;
     }
 
 
@@ -28,7 +29,7 @@ public class PersonValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Person person = (Person) target;
 
-        if(personDAO.getPersonByName(person.getPersonName()).isPresent())
-            errors.rejectValue("personName", "", "Person with this name already exists!");
+        if(peopleService.getPersonByFullName(person.getFullName()).isPresent())
+            errors.rejectValue("fullName", "", "Person with this name already exists!");
     }
 }

@@ -5,45 +5,50 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
 @Entity
 @Table(name = "Person")
 public class Person {
     @Id
-    @Column(name = "personid")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int personId;
+    private int id;
 
     @NotEmpty(message = "The name cannot be empty!")
     @Size(min = 2, max = 100, message = "The length of the name must be between 2 and 100!")
-    @Column(name = "personname")
-    private String personName;
+    @Column(name = "full_name")
+    private String fullName;
 
     @Min(value = 1900, message = "The year of birth cannot be less than 1900!")
-    @Column(name = "yearofbirth")
+    @Column(name = "year_of_birth")
     private int yearOfBirth;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Book> books;
 
     public Person() {
     }
 
-    public Person(String personName, int yearOfBirth) {
-        this.personName = personName;
+    public Person(String fullName, int yearOfBirth) {
+        this.fullName = fullName;
         this.yearOfBirth = yearOfBirth;
     }
 
-    public int getPersonId() {
-        return personId;
+    public int getId() {
+        return id;
     }
 
-    public void setPersonId(int personId) {
-        this.personId = personId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getPersonName() {
-        return personName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setPersonName(String personName) {
-        this.personName = personName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public int getYearOfBirth() {
@@ -52,5 +57,13 @@ public class Person {
 
     public void setYearOfBirth(int yearOfBirth) {
         this.yearOfBirth = yearOfBirth;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 }

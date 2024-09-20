@@ -5,10 +5,10 @@
     <title>Update person</title>
 </head>
 <body>
-<form th:method="PATCH" th:action="@{/people/{id}(id=${person.getPersonId()})}" th:object="${person}">
-    <label for="personName">Name</label>
-    <input type="text" th:field="*{personName}" id="personName">
-    <div style="color: red" th:if="${#fields.hasErrors('personName')}" th:errors="*{personName}">Name error</div>
+<form th:method="PATCH" th:action="@{/people/{id}(id=${person.getId()})}" th:object="${person}">
+    <label for="fullName">Name</label>
+    <input type="text" th:field="*{fullName}" id="fullName">
+    <div style="color: red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Name error</div>
     <br/>
     <label for="yearOfBirth">Year of Birth</label>
     <input type="text" th:field="*{yearOfBirth}" id="yearOfBirth">
